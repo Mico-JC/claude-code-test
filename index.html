@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Terminal - N8N Chatbot Interface</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="matrix-bg">
+        <canvas id="matrix-canvas"></canvas>
+    </div>
+
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="terminal-title">
+                <span class="blinking-cursor">█</span> MATRIX TERMINAL v2.1.0
+                <span class="connection-status" id="connection-status">CONNECTED</span>
+            </div>
+            <div class="terminal-controls">
+                <div class="control-btn minimize"></div>
+                <div class="control-btn maximize"></div>
+                <div class="control-btn close"></div>
+            </div>
+        </div>
+
+        <div class="terminal-body">
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="system-message">
+                        <span class="timestamp">[00:00:00]</span>
+                        <span class="text">System initialized. N8N Chatbot online.</span>
+                    </div>
+                    <div class="system-message">
+                        <span class="timestamp">[00:00:01]</span>
+                        <span class="text">Welcome to the Matrix. How may I assist you?</span>
+                    </div>
+                </div>
+
+                <div class="input-container">
+                    <div class="input-line">
+                        <span class="prompt">user@matrix:~$</span>
+                        <input type="text" id="message-input" class="terminal-input" placeholder="Enter your message..." autocomplete="off">
+                        <span class="input-cursor">█</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Matrix Terminal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #00aaff;
+            font-family: 'Courier Prime', monospace;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.95));
+            z-index: 1;
+        }
+
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .rain-column {
+            position: absolute;
+            top: -100%;
+            font-size: 14px;
+            line-height: 18px;
+            color: #0066cc;
+            opacity: 0.7;
+            animation: rain linear infinite;
+        }
+
+        @keyframes rain {
+            to {
+                top: 100%;
+            }
+        }
+
+        .baby-emoji {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 200px;
+            opacity: 0.1;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .terminal-container {
+            position: relative;
+            z-index: 4;
+            width: 90%;
+            max-width: 1200px;
+            height: 80vh;
+            margin: 10vh auto;
+            border: 2px solid #00aaff;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.85);
+            box-shadow: 0 0 50px #00aaff;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            background: linear-gradient(135deg, #003366, #0066cc);
+            padding: 10px 20px;
+            border-bottom: 1px solid #00aaff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-title {
+            font-weight: bold;
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+        .terminal-status {
+            background: #00aaff;
+            color: #000;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .terminal-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .close { background: #ff5f56; }
+        .minimize { background: #ffbd2e; }
+        .maximize { background: #27ca3f; }
+
+        .terminal-content {
+            padding: 20px;
+            height: calc(100% - 60px);
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .terminal-line {
+            margin-bottom: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .timestamp {
+            color: #0099dd;
+        }
+
+        .system-text {
+            color: #00ccff;
+        }
+
+        .input-line {
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .prompt {
+            color: #00aaff;
+            margin-right: 10px;
+        }
+
+        .cursor {
+            background: #00aaff;
+            width: 10px;
+            height: 18px;
+            display: inline-block;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .input-text {
+            color: #00ccff;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    <div class="matrix-rain" id="matrixRain"></div>
+    <div class="baby-emoji">👶</div>
+
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="terminal-title">MATRIX TERMINAL v2.1.0</div>
+            <div class="terminal-status">CONNECTED</div>
+            <div class="terminal-controls">
+                <div class="control-btn close"></div>
+                <div class="control-btn minimize"></div>
+                <div class="control-btn maximize"></div>
+            </div>
+        </div>
+
+        <div class="terminal-content">
+            <div class="terminal-line">
+                <span class="timestamp">[00:00:00]</span>
+                <span class="system-text">System initialized. N8N Chatbot online.</span>
+            </div>
+
+            <div class="terminal-line">
+                <span class="timestamp">[00:00:01]</span>
+                <span class="system-text">Welcome to the Matrix. How may I assist you?</span>
+            </div>
+
+            <div class="input-line">
+                <span class="prompt">user@matrix:~$</span>
+                <span class="input-text">Enter your message...</span>
+                <span class="cursor"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create matrix rain effect
+        function createMatrixRain() {
+            const container = document.getElementById('matrixRain');
+            const characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+
+            for (let i = 0; i < 50; i++) {
+                const column = document.createElement('div');
+                column.className = 'rain-column';
+                column.style.left = Math.random() * 100 + '%';
+                column.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                column.style.animationDelay = Math.random() * 2 + 's';
+
+                let text = '';
+                for (let j = 0; j < 20; j++) {
+                    text += characters[Math.floor(Math.random() * characters.length)] + '<br>';
+                }
+                column.innerHTML = text;
+
+                container.appendChild(column);
+            }
+        }
+
+        createMatrixRain();
+
+        // Regenerate rain columns periodically
+        setInterval(() => {
+            const container = document.getElementById('matrixRain');
+            container.innerHTML = '';
+            createMatrixRain();
+        }, 10000);
+    </script>
+</body>
+</html>
