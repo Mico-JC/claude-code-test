@@ -15,13 +15,5 @@
       "src": "/(.*)",
       "dest": "/$1"
     }
-  ],
-  "functions": {
-    "api/*.py": {
-      "runtime": "python3.9"
-    }
-  },
-  "env": {
-    "N8N_WEBHOOK_URL": "@n8n_webhook_url"
-  }
+  ]
 }
